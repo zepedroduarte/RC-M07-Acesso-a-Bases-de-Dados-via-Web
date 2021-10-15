@@ -29,7 +29,10 @@ namespace SantaShop.API.Controllers
             _santaService.DbConnection = new SqlConnection(configuration.GetConnectionString("SantaBD"));
         }
 
-
+        /// <summary>
+        /// Lista Presentes
+        /// </summary>
+        /// <returns>Lista Presentes </returns>
         // GET: api/<PresentsController>
         [HttpGet]
         public IEnumerable<Present> Get()

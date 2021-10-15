@@ -7,8 +7,10 @@ using Microsoft.Extensions.Hosting;
 
 using SantaShop.Core.Interfaces;
 using SantaShop.Core.Services;
-
+using System;
 using System.Data;
+using System.IO;
+using System.Reflection;
 
 namespace SantaShop.API
 {
@@ -31,6 +33,16 @@ namespace SantaShop.API
             services.AddScoped<ISantaShopService, PresentsService>();
             services.AddScoped<ISantaShopService, ChildrenService>();
 
+            services.AddControllers();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My AWESOME API!", Version = "v1" });
+              
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +63,21 @@ namespace SantaShop.API
             {
                 endpoints.MapControllers();
             });
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            // Swagger
+            app.UseSwagger();
+            // UI do Swagger
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My AWESOME API V1");
+            });
+
+            app.UseHttpsRedirection();
         }
     }
 }
