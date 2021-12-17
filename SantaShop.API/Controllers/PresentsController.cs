@@ -18,6 +18,7 @@ namespace SantaShop.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class PresentsController : ControllerBase
+
     {
         private readonly ISantaShopService _santaService;
         private readonly IConfiguration _configuration;

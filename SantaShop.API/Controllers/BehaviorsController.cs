@@ -10,6 +10,7 @@ using SantaShop.Core.TablesModels;
 using SantaShop.Core;
 using Microsoft.Extensions.Configuration;
 using SantaShop.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,6 +34,7 @@ namespace SantaShop.API.Controllers
 
         // GET: api/<BehaviorsController>
         [HttpGet]
+        [Authorize(Roles = "santa, elf")]
         public IEnumerable<Behavior> Get()
         {
             return _santaService.PesquisarTodos<Behavior>();
@@ -40,6 +42,7 @@ namespace SantaShop.API.Controllers
 
         // GET api/<BehaviorsController>/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "santa, elf")]
         public dynamic Get(long id)
         {
             return _santaService.Pesquisar<Behavior>(id);
@@ -47,6 +50,7 @@ namespace SantaShop.API.Controllers
 
         // POST api/<BehaviorsController>
         [HttpPost]
+        [Authorize(Roles = "santa")]
         public Behavior Post([FromBody] Behavior behavior)
         {
             long newID = _santaService.Inserir<Behavior> (behavior);
@@ -59,6 +63,7 @@ namespace SantaShop.API.Controllers
 
         // PUT api/<BehaviorsController>/5
         [HttpPut("{id}")]
+        [Authorize(Roles = "santa")]
         public Behavior Put(long id, [FromBody] Behavior behavior)
         {
             if (_santaService.Actualizar<Behavior> (behavior))
@@ -69,6 +74,7 @@ namespace SantaShop.API.Controllers
 
         // DELETE api/<BehaviorsController>/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "santa")]
         public DeletedStatusEnum Delete(long id)
         {
             return _santaService.Eliminar<Behavior>(id);
